@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天竺鼠子靚轉生儀式</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lavender-light: #F8F3FF;
+            --lavender-primary: #E2C4FD;
+            --lavender-dark: #C9A2F7;
+            --carrot-orange: #FF8A65;
+            --grass-green: #A5D6A7;
+            --card-bg: rgba(255, 255, 255, 0.95);
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            font-weight: 400;
+            background-color: var(--lavender-light);
+            color: #5D4037;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M20,50 Q35,20 50,50 T80,50" stroke="%23C9A2F7" fill="none" stroke-width="1" opacity="0.2"/></svg>');
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .header::after {
+            content: "";
+            display: block;
+            height: 3px;
+            background: linear-gradient(90deg, var(--lavender-primary), var(--carrot-orange), var(--grass-green));
+            margin-top: 1rem;
+        }
+        .photo-frame {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin: 0 auto 1rem;
+            overflow: hidden;
+            background: var(--grass-green);
+            box-shadow: 0 6px 16px rgba(201, 162, 247, 0.3);
+        }
+        h1, h2, h3 {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        h1 {
+            font-weight: 700;
+            color: var(--lavender-dark);
+            font-size: 2.8rem;
+            margin: 1rem 0 0.5rem;
+            text-shadow: 2px 2px 0px white;
+        }
+        h2 {
+            font-weight: 600;
+            color: var(--carrot-orange);
+            font-size: 1.8rem;
+            border-left: 5px solid var(--grass-green);
+            padding-left: 1rem;
+            margin: 2rem 0 1rem;
+        }
+        h3 {
+            font-weight: 500;
+            color: var(--lavender-dark);
+            font-size: 1.4rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .invitation-card {
+            border-top: 8px solid var(--lavender-primary);
+        }
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            justify-content: center;
+        }
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--lavender-dark);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Noto Sans TC', sans-serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        .nav-btn:hover {
+            background: var(--carrot-orange);
+            transform: translateY(-3px);
+        }
+        .paw-print {
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            color: var(--lavender-dark);
+            margin: 1rem 0;
+        }
+        /* 相簿樣式 */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .photo-item {
+            position: relative;
+            padding-top: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .photo-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .photo-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+        .photo-item:hover img {
+            transform: scale(1.05);
+        }
+        /* 照片彈出效果 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: auto;
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 8px;
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .photo-caption {
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.7);
+        }
+        /* 留言表單 */
+        .message-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .message-input-group {
+            display: flex;
+            gap: 1rem;
+        }
+        #message-author {
+            width: 120px;
+            padding: 0.8rem;
+            border: 2px solid var(--lavender-primary);
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .message-box {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 2px solid var(--lavender-primary);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .submit-btn {
+            background: var(--lavender-dark);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            align-self: flex-end;
+        }
+        .submit-btn:hover {
+            background: var(--carrot-orange);
+        }
+        /* 留言列表 */
+        .message-list {
+            margin-top: 2rem;
+        }
+        .message-item {
+            padding: 1rem;
+            border-bottom: 1px dashed var(--lavender-primary);
+            margin-bottom: 1rem;
+        }
+        .message-item:last-child {
+            border-bottom: none;
+        }
+        .message-author {
+            font-weight: 500;
+            color: var(--lavender-dark);
+        }
+        .message-date {
+            font-size: 0.8rem;
+            color: #999;
+            margin-left: 1rem;
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .photo-frame { width: 140px; height: 140px; }
+            .card { padding: 1.5rem; }
+            .message-input-group { flex-direction: column; }
+            #message-author { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="photo-frame">
+            <img src="https://i.imgur.com/J9OQZfA.png" alt="天竺鼠子靚" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <h1>天竺鼠子靚轉生儀式</h1>
+        <div class="paw-print">⋆｡°✩ ⋆｡°✩</div>
+    </header>
+
+    <main>
+        <section class="card invitation-card">
+            <p style="font-size: 1.2rem; line-height: 2;">我們親愛的詹子靚同學，已經在2025年5月10號前往轉生為天竺鼠的路上。謹擇於2025年XX月XX日於XXX舉行告別儀式，敬邀諸位親友蒞臨告別致意。</p>
+            <p style="text-align: right; font-weight: 500; margin-top: 1.5rem;">momo叩謝</p>
+        </section>
+
+        <section class="card">
+            <h2>儀式資訊</h2>
+            <p><strong>日期：</strong>2025年XX月XX日</p>
+            <p><strong>時間：</strong>XX時XX分</p>
+            <p><strong>地點：</strong>XXX</p>
+            <p><strong>地址：</strong>XXX</p>
+            <p><strong>電話：</strong>XXX</p>
+        </section>
+
+        <div class="nav-tabs">
+            <button class="nav-btn" onclick="showTab('album')">天竺鼠追思相冊</button>
+            <button class="nav-btn" onclick="showTab('location')">轉生儀式地點</button>
+            <button class="nav-btn" onclick="showTab('carrot')">紅蘿蔔訂購</button>
+            <button class="nav-btn" onclick="showTab('message')">留言給天竺鼠</button>
+        </div>
+
+        <!-- 分頁內容區 -->
+        <div id="album-tab" class="card tab-content" style="display: none;">
+            <h2>天竺鼠追思相冊</h2>
+            <div id="photo-container" class="photo-grid">
+                <!-- 照片將動態載入 -->
+            </div>
+        </div>
+
+        <div id="location-tab" class="card tab-content" style="display: none;">
+            <h2>轉生儀式地點</h2>
+            <div style="margin-top: 1rem;">
+                <img src="https://maps.googleapis.com/maps/api/staticmap?center=25.0330,121.5654&zoom=15&size=600x300&maptype=roadmap&markers=color:purple%7C25.0330,121.5654&key=YOUR_API_KEY" style="width: 100%; border-radius: 8px;">
+                <p style="margin-top: 1rem;">地址：台北市天竺鼠大道一段100號</p>
+                <div style="margin: 1rem auto; text-align: center;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://goo.gl/maps/XXXXX" alt="導航QR碼" style="border: 8px solid white; border-radius: 8px;">
+                </div>
+            </div>
+        </div>
+
+        <div id="carrot-tab" class="card tab-content" style="display: none;">
+            <h2>紅蘿蔔追思禮</h2>
+            <p>為紀念子靚最愛的零食，我們準備了紅蘿蔔花束訂購服務：</p>
+            <ul style="padding-left: 1.5rem;">
+                <li>小束裝 (3根) - $150</li>
+                <li>中束裝 (6根) - $280</li>
+                <li>大束裝 (10根) - $450</li>
+            </ul>
+            <button class="submit-btn" style="margin-top: 1rem;">立即訂購</button>
+        </div>
+
+        <div id="message-tab" class="card tab-content" style="display: none;">
+            <h2>留言給天竺鼠</h2>
+            <div class="message-form">
+                <div class="message-input-group">
+                    <input type="text" id="message-author" placeholder="您的暱稱" maxlength="20" required>
+                    <textarea class="message-box" id="message-text" placeholder="請輸入想對子靚說的話..." required></textarea>
+                </div>
+                <button class="submit-btn" onclick="addMessage()">送出留言</button>
+            </div>
+            
+            <div id="message-list" class="message-list">
+                <h3>留言一覽</h3>
+                <!-- 留言將動態載入 -->
+            </div>
+        </div>
+    </main>
+
+    <!-- 照片彈出模態框 -->
+    <div id="photo-modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modal-image">
+        <div id="modal-caption" class="photo-caption"></div>
+    </div>
+
+    <footer class="card" style="text-align: center; margin-top: 3rem;">
+        <p>⋆｡°✩ 謝謝您參與子靚的轉生儀式 ✩°｡⋆</p>
+        <p style="margin-top: 0.5rem;">聯絡電話：0912-345-678（momo）</p>
+    </footer>
+
+    <script>
+        // 儲存鍵名
+        const STORAGE_KEYS = {
+            MESSAGES: "tianzhu_mouse_messages",
+            PHOTOS: "tianzhu_mouse_photos"
+        };
+
+        // 初始化資料
+        let messages = loadData(STORAGE_KEYS.MESSAGES, [
+            {
+                text: "子靚，謝謝你帶給我們的歡樂，在吱星也要開開心心的吃紅蘿蔔喔！",
+                author: "小美",
+                date: new Date('2025-05-12T10:30:00').toLocaleString()
+            },
+            {
+                text: "永遠記得你可愛的模樣，願你在新旅程一切安好",
+                author: "阿明",
+                date: new Date('2025-05-11T15:45:00').toLocaleString()
+            }
+        ]);
+        
+        let photos = loadData(STORAGE_KEYS.PHOTOS, [
+            {
+                url: "https://i.imgur.com/J9OQZfA.png",
+                caption: "子靚最可愛的模樣"
+            },
+            {
+                url: "https://i.imgur.com/5bT3ZQk.jpg",
+                caption: "吃紅蘿蔔的日常"
+            },
+            {
+                url: "https://i.imgur.com/8nLfQq2.jpg",
+                caption: "玩樂時光"
+            }
+        ]);
+
+        // 載入資料
+        function loadData(key, defaultValue) {
+            const saved = localStorage.getItem(key);
+            return saved ? JSON.parse(saved) : defaultValue;
+        }
+
+        // 儲存資料
+        function saveData(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        // 分頁切換功能
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            document.getElementById(tabName + '-tab').style.display = 'block';
+        }
+
+        // 載入相簿
+        function loadPhotoAlbum() {
+            const container = document.getElementById('photo-container');
+            container.innerHTML = '';
+            
+            if (photos.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#999;">相簿正在整理中，敬請期待</p>';
+                return;
+            }
+            
+            photos.forEach((photo, index) => {
+                const item = document.createElement('div');
+                item.className = 'photo-item';
+                item.innerHTML = `
+                    <img src="${photo.url}" alt="${photo.caption || '追思照片'}" onclick="openModal(${index})">
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // 照片彈出功能
+        function openModal(index) {
+            const modal = document.getElementById('photo-modal');
+            const modalImg = document.getElementById('modal-image');
+            const captionText = document.getElementById('modal-caption');
+            
+            modal.style.display = "block";
+            modalImg.src = photos[index].url;
+            captionText.innerHTML = photos[index].caption || "";
+        }
+
+        function closeModal() {
+            document.getElementById('photo-modal').style.display = "none";
+        }
+
+        // 留言功能
+        function addMessage() {
+            const authorInput = document.getElementById('message-author');
+            const textInput = document.getElementById('message-text');
+            
+            const author = authorInput.value.trim() || "匿名";
+            const text = textInput.value.trim();
+            
+            if (!text) {
+                alert('請輸入留言內容');
+                return;
+            }
+            
+            const newMessage = {
+                text: text,
+                author: author,
+                date: new Date().toLocaleString()
+            };
+            
+            messages.unshift(newMessage);
+            saveData(STORAGE_KEYS.MESSAGES, messages);
+            updateMessageList();
+            
+            textInput.value = '';
+        }
+
+        function updateMessageList() {
+            const messageList = document.getElementById('message-list');
+            
+            if (messages.length === 0) {
+                messageList.innerHTML = '<h3>留言一覽</h3><p style="text-align: center; color: #999;">暫無留言</p>';
+                return;
+            }
+            
+            let html = '<h3>留言一覽</h3>';
+            messages.forEach(msg => {
+                html += `
+                    <div class="message-item">
+                        <div style="margin-bottom: 0.5rem;">
+                            <span class="message-author">${msg.author}</span>
+                            <span class="message-date">${msg.date}</span>
+                        </div>
+                        <p>${msg.text}</p>
+                    </div>
+                `;
+            });
+            
+            messageList.innerHTML = html;
+        }
+
+        // 初始化頁面
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPhotoAlbum();
+            updateMessageList();
+            showTab('album'); // 預設顯示相簿
+            
+            // 點擊模態框外部關閉
+            window.onclick = function(event) {
+                const modal = document.getElementById('photo-modal');
+                if (event.target == modal) {
+                    closeModal();
+                }
+            };
+            
+            // Enter鍵提交留言
+            document.getElementById('message-text').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    addMessage();
+                }
+            });
+        });
+
+        // === 管理員功能 ===
+        // 在瀏覽器控制台執行以下函數管理資料
+        
+        // 添加照片
+        function addPhoto(url, caption = "") {
+            photos.push({ url, caption });
+            saveData(STORAGE_KEYS.PHOTOS, photos);
+            loadPhotoAlbum();
+            console.log('照片已添加！');
+        }
+        
+        // 刪除照片 (根據索引)
+        function removePhoto(index) {
+            if (index >= 0 && index < photos.length) {
+                photos.splice(index, 1);
+                saveData(STORAGE_KEYS.PHOTOS, photos);
+                loadPhotoAlbum();
+                console.log('照片已刪除！');
+            }
+        }
+        
+        // 清空所有留言
+        function clearMessages() {
+            if (confirm('確定要清空所有留言嗎？此操作無法復原！')) {
+                messages = [];
+                saveData(STORAGE_KEYS.MESSAGES, messages);
+                updateMessageList();
+            }
+        }
+        
+        // 備份所有資料
+        function backupData() {
+            return {
+                messages: localStorage.getItem(STORAGE_KEYS.MESSAGES),
+                photos: localStorage.getItem(STORAGE_KEYS.PHOTOS)
+            };
+        }
+        
+        // 恢復資料
+        function restoreData(messagesData, photosData) {
+            localStorage.setItem(STORAGE_KEYS.MESSAGES, messagesData);
+            localStorage.setItem(STORAGE_KEYS.PHOTOS, photosData);
+            location.reload();
+        }
+    </script>
+</body>
+</html>
+<!-- 在您的HTML檔案底部加入此代碼 -->
+<div style="text-align:center; margin:2rem 0;">
+  <h3>手機掃碼瀏覽</h3>
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=子靚的人生畢業典禮" alt="QR Code">
+  <p>掃描此QR碼即可在手機開啟</p>
+</div>
